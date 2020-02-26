@@ -61,7 +61,7 @@ window.addEventListener('load', async () => {
   )
 
   let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
-  $("#balance").text("Your token balance is " + genBalance + network === 'mainnet' ? ' GEN' : ' xGEN')
+  $("#balance").text("Your token balance is " + genBalance + (network === 'mainnet' ? ' GEN' : ' xGEN'))
 
 
   $("#form").submit(function(event) {
