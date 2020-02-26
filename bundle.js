@@ -1,32 +1,46 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.module = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-let submit = function(event) {
-  event.preventDefault();
-  let xgenToMove = parseInt(document.getElementById("amount").value);
-  if (isNaN(xgenToMove)) {
-    alert('Invalid amount of tokens.');
-    return;
-  }
-  moveGEN(xgenToMove);
-};
-
-let form = document.getElementById("form");
-
-form.addEventListener("submit", submit, true);
-
-async function moveGEN (xgenToMove) {
+window.addEventListener('load', async () => {
   if (window.ethereum) {
     window.web3 = new Web3(ethereum);
     try {
       await ethereum.enable();
     } catch (error) {
-      console.log('An error occurred: ' + error);
+      toastr.error('An error occurred: ' + error);
     }
   } else if (window.web3) {
     window.web3 = new Web3(web3.currentProvider);
   } else {
-    alert('Non-Ethereum browser detected. You should consider trying MetaMask.');
+    toastr.error('Non-Ethereum browser detected. You should consider trying MetaMask.');
+    return
   }
 
+  let network = await web3.eth.net.getNetworkType()
+  if (network === 'private') {
+    if (await web3.eth.net.getId() === 100) {
+      network = 'xdai'
+    }
+  } else if (network === 'main') {
+    network = 'mainnet'
+  }
+
+  if (network !== 'mainnet' && network !== 'xdai') {
+    console.error('Invalid network specified (please use xDai/ mainnet).')
+    return
+  }
+
+  $("form").submit(function(event) {
+    event.preventDefault();
+    let xgenToMove = parseInt(document.getElementById("amount").value);
+    if (isNaN(xgenToMove)) {
+      alert('Invalid amount of tokens.');
+      return;
+    }
+    moveGEN(xgenToMove);
+  })
+});
+
+
+async function moveGEN (xgenToMove) {
   let defaultAddress = (await web3.eth.getAccounts())[0];
   
   let opts = {
