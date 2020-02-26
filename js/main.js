@@ -54,7 +54,7 @@ window.addEventListener('load', async () => {
       }
     ],
     '0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf',
-    opts
+    {}
   )
 
   let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
