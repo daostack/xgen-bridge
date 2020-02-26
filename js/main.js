@@ -14,14 +14,17 @@ window.addEventListener('load', async () => {
   }
 
   let network = await web3.eth.net.getNetworkType()
+  let tokenName
   if (network === 'private') {
     if (await web3.eth.net.getId() === 100) {
       network = 'xdai'
+      tokenName = 'xGEN'
       $("#description").text('Your wallet is connected to the xDai network.')
       $("#direction").text('The direction of the bridge is xGEN to GEN.')
     }
   } else if (network === 'main') {
     network = 'mainnet'
+    tokenName = 'GEN'
     $("#description").text('Your wallet is connected to the Ethereum mainnet network.')
     $("#direction").text('The direction of the bridge is GEN to xGEN.')
   }
@@ -60,7 +63,7 @@ window.addEventListener('load', async () => {
   )
 
   let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
-  $("#balance").text("Your token balance is " + genBalance + (network === 'mainnet' ? ' GEN' : ' xGEN'))
+  $("#balance").text("Your token balance is " + genBalance + ' ' + tokenName)
 
 
   $("#form").submit(function(event) {
