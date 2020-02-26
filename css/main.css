@@ -11,7 +11,7 @@ body{background:#f2f2f2 !important; font-family:'Source Sans Pro','Helvetica Neu
 }
 
 .btn {
-  margin-top: 10px;
+  margin: 10px auto;
   border-radius: 2px;
   display: block;
 }
@@ -24,13 +24,14 @@ body{background:#f2f2f2 !important; font-family:'Source Sans Pro','Helvetica Neu
 
 input {
   display: block;
+  margin: 0 auto;
 }
 
 #form {
   border: black 1px solid;
   width: 40%;
   padding: 3%;
-  margin: 5%;
+  margin: 5% auto;
   border-radius: 2.5%;
   background: #e4e4e4;
 }
