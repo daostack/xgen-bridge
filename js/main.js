@@ -68,13 +68,17 @@ window.addEventListener('load', async () => {
 
   let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
   $('#balance').text('Your token balance is ' + genBalance + ' ' + tokenName)
+  $('#amount').attr('max', genBalance)
 
 
   $('#form').submit(function(event) {
     event.preventDefault();
-    let xgenToMove = parseInt(document.getElementById('amount').value);
+    let xgenToMove = parseInt($('#amount').val());
     if (isNaN(xgenToMove)) {
       toastr.error('Invalid amount of tokens.');
+      return;
+    } else if (xgenToMove > genBalance) {
+      toastr.error('You lack the sufficient balance to move this amount.');
       return;
     }
     moveGEN(xgenToMove);
