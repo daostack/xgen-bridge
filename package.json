@@ -1,0 +1,24 @@
+{
+  "name": "xdai-token-bridge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ben@daostack.io",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ethereumjs-tx": "^1.3.6",
+    "ethereumjs-wallet": "^0.6.0",
+    "express": "^4.9.8",
+    "express-validator": "^5.2.0",
+    "typedarray-to-buffer": "^3.1.5",
+    "web3": "1.2.6"
+  },
+  "engines": {
+    "node": "10.4.1",
+    "npm": "6.1.0"
+  }
+}
