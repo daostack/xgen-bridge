@@ -9,22 +9,31 @@ body{background:#f2f2f2 !important; font-family:'Source Sans Pro','Helvetica Neu
   margin-bottom: 20px;
 }
 
-.card img {
-  width: 130px;
-  height: 120px;
-}
-
-.card .btn {
+.btn {
   margin-top: 10px;
   border-radius: 2px;
+  display: block;
 }
 
 .title {
   margin-bottom: 30px;
   color: #000000;
+  text-decoration: underline;
 }
 
-#address {
-  width: 400px;
-  text-align: center;
+input {
+  display: block;
+}
+
+#form {
+  border: black 1px solid;
+  width: 40%;
+  padding: 3%;
+  margin: 5%;
+  border-radius: 2.5%;
+  background: #e4e4e4;
+}
+
+#balance {
+  margin: 5%
 }
