@@ -144,6 +144,7 @@ async function moveGEN (xgenToMove) {
   )
   await GENTokenContract.methods.transfer(bridgeAddress, weiValue, callData).send()
 
+  toastr.info('Transaction was mined successfully. The tokens will be in your account in a few blocks.')
 }
 },{}]},{},[1])(1)
 });
