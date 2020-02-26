@@ -14,49 +14,53 @@ window.addEventListener('load', async () => {
     return
   }
 
+  let defaultAddress = (await web3.eth.getAccounts())[0]
+  $('#blockscouts').attr('href', 'https://blockscout.com/poa/xdai/address/' + defaultAddress + '/tokens')
+  $('#etherscan').attr('href', 'https://etherscan.io/address/' + defaultAddress + '#tokentxns')
+
   let network = await web3.eth.net.getNetworkType()
   let tokenName
   if (network === 'private') {
     if (await web3.eth.net.getId() === 100) {
       network = 'xdai'
       tokenName = 'xGEN'
-      $("#description").text('Your wallet is connected to the xDai network.')
-      $("#direction").text('The direction of the bridge is xGEN to GEN.')
+      $('#description').text('Your wallet is connected to the xDai network.')
+      $('#direction').text('The direction of the bridge is xGEN to GEN.')
     }
   } else if (network === 'main') {
     network = 'mainnet'
     tokenName = 'GEN'
-    $("#description").text('Your wallet is connected to the Ethereum mainnet network.')
-    $("#direction").text('The direction of the bridge is GEN to xGEN.')
+    $('#description').text('Your wallet is connected to the Ethereum mainnet network.')
+    $('#direction').text('The direction of the bridge is GEN to xGEN.')
   }
 
   
   if (network !== 'mainnet' && network !== 'xdai') {
     toastr.error('Invalid network specified (please use xDai/ mainnet).')
-    $("#description").text('No web3 provider detected...')
+    $('#description').text('No web3 provider detected...')
     return
   }
 
   const GENTokenContract = await new web3.eth.Contract(
     [
       {
-        "constant": true,
-        "inputs": [
+        'constant': true,
+        'inputs': [
           {
-            "name": "owner",
-            "type": "address"
+            'name': 'owner',
+            'type': 'address'
           }
         ],
-        "name": "balanceOf",
-        "outputs": [
+        'name': 'balanceOf',
+        'outputs': [
           {
-            "name": "",
-            "type": "uint256"
+            'name': '',
+            'type': 'uint256'
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        'payable': false,
+        'stateMutability': 'view',
+        'type': 'function'
       }
     ],
     '0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf',
@@ -64,12 +68,12 @@ window.addEventListener('load', async () => {
   )
 
   let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
-  $("#balance").text("Your token balance is " + genBalance + ' ' + tokenName)
+  $('#balance').text('Your token balance is ' + genBalance + ' ' + tokenName)
 
 
-  $("#form").submit(function(event) {
+  $('#form').submit(function(event) {
     event.preventDefault();
-    let xgenToMove = parseInt(document.getElementById("amount").value);
+    let xgenToMove = parseInt(document.getElementById('amount').value);
     if (isNaN(xgenToMove)) {
       toastr.error('Invalid amount of tokens.');
       return;
