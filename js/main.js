@@ -17,17 +17,17 @@ window.addEventListener('load', async () => {
   if (network === 'private') {
     if (await web3.eth.net.getId() === 100) {
       network = 'xdai'
-      $("description").text('Your wallet is connected to the xDai network.\nThe direction of the bridge is xGEN to GEN')
+      $("#description").text('Your wallet is connected to the xDai network.\nThe direction of the bridge is xGEN to GEN')
     }
   } else if (network === 'main') {
     network = 'mainnet'
-    $("description").text('Your wallet is connected to the Ethereum mainnet network.\nThe direction of the bridge is GEN to xGEN')
+    $("#description").text('Your wallet is connected to the Ethereum mainnet network.\nThe direction of the bridge is GEN to xGEN')
   }
 
   
   if (network !== 'mainnet' && network !== 'xdai') {
-    console.error('Invalid network specified (please use xDai/ mainnet).')
-    $("description").text('No web3 provider detected...')
+    toastr.error('Invalid network specified (please use xDai/ mainnet).')
+    $("#description").text('No web3 provider detected...')
     return
   }
 
@@ -58,10 +58,10 @@ window.addEventListener('load', async () => {
   )
 
   let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
-  $("balance").text("Your token balance is " + genBalance)
+  $("#balance").text("Your token balance is " + genBalance)
 
 
-  $("form").submit(function(event) {
+  $("#form").submit(function(event) {
     event.preventDefault();
     let xgenToMove = parseInt(document.getElementById("amount").value);
     if (isNaN(xgenToMove)) {
