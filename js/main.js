@@ -17,15 +17,49 @@ window.addEventListener('load', async () => {
   if (network === 'private') {
     if (await web3.eth.net.getId() === 100) {
       network = 'xdai'
+      $("description").text('Your wallet is connected to the xDai network.\nThe direction of the bridge is xGEN to GEN')
     }
   } else if (network === 'main') {
     network = 'mainnet'
+    $("description").text('Your wallet is connected to the Ethereum mainnet network.\nThe direction of the bridge is GEN to xGEN')
   }
 
+  
   if (network !== 'mainnet' && network !== 'xdai') {
     console.error('Invalid network specified (please use xDai/ mainnet).')
+    $("description").text('No web3 provider detected...')
     return
   }
+
+  const GENTokenContract = await new web3.eth.Contract(
+    [
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    '0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf',
+    opts
+  )
+
+  let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
+  $("balance").text("Your token balance is " + genBalance)
+
 
   $("form").submit(function(event) {
     event.preventDefault();
@@ -107,7 +141,6 @@ async function moveGEN (xgenToMove) {
     '0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf',
     opts
   )
-
-  tx = await GENTokenContract.methods.transfer(bridgeAddress, weiValue, callData).send()
+  await GENTokenContract.methods.transfer(bridgeAddress, weiValue, callData).send()
 
 }
