@@ -1,32 +1,45 @@
-let submit = function(event) {
-  event.preventDefault();
-  let xgenToMove = parseInt(document.getElementById("amount").value);
-  if (isNaN(xgenToMove)) {
-    alert('Invalid amount of tokens.');
-    return;
-  }
-  moveGEN(xgenToMove);
-};
-
-let form = document.getElementById("form");
-
-form.addEventListener("submit", submit, true);
-
-async function moveGEN (xgenToMove) {
+window.addEventListener('load', async () => {
   if (window.ethereum) {
     window.web3 = new Web3(ethereum);
     try {
       await ethereum.enable();
     } catch (error) {
-      console.log('An error occurred: ' + error);
+      toastr.error('An error occurred: ' + error);
     }
   } else if (window.web3) {
     window.web3 = new Web3(web3.currentProvider);
   } else {
-    alert('Non-Ethereum browser detected. You should consider trying MetaMask.');
+    toastr.error('Non-Ethereum browser detected. You should consider trying MetaMask.');
     return
   }
 
+  let network = await web3.eth.net.getNetworkType()
+  if (network === 'private') {
+    if (await web3.eth.net.getId() === 100) {
+      network = 'xdai'
+    }
+  } else if (network === 'main') {
+    network = 'mainnet'
+  }
+
+  if (network !== 'mainnet' && network !== 'xdai') {
+    console.error('Invalid network specified (please use xDai/ mainnet).')
+    return
+  }
+
+  $("form").submit(function(event) {
+    event.preventDefault();
+    let xgenToMove = parseInt(document.getElementById("amount").value);
+    if (isNaN(xgenToMove)) {
+      alert('Invalid amount of tokens.');
+      return;
+    }
+    moveGEN(xgenToMove);
+  })
+});
+
+
+async function moveGEN (xgenToMove) {
   let defaultAddress = (await web3.eth.getAccounts())[0];
   
   let opts = {
