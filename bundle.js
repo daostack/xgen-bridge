@@ -67,7 +67,8 @@ window.addEventListener('load', async () => {
     {}
   )
 
-  let genBalance = web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call())
+  let genBalance = Math.round(web3.utils.fromWei(await GENTokenContract.methods.balanceOf((await web3.eth.getAccounts())[0]).call()) * 10) / 10
+
   $('#balance').text('Your token balance is ' + genBalance + ' ' + tokenName)
   $('#amount').attr('max', genBalance)
 
