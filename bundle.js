@@ -75,7 +75,7 @@ window.addEventListener('load', async () => {
 
   $('#form').submit(function(event) {
     event.preventDefault();
-    let xgenToMove = parseInt($('#amount').val());
+    let xgenToMove = parseFloat($('#amount').val());
     if (isNaN(xgenToMove)) {
       toastr.error('Invalid amount of tokens.');
       return;
